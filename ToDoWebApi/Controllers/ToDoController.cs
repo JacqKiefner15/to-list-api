@@ -93,6 +93,25 @@ namespace ToDoWebApi.Controllers
             {
                 return StatusCode(500, $"Internal Server error: {ex.Message}");
             }
+            
         }
+
+        [HttpDelete("(id)")]
+        public async Task<ActionResult> SoftDeleteToDoItem(int id)
+        {
+            var toDoItem = await _context.ToDos.FindAsync(id);
+
+            if (toDoItem == null)
+            {
+                return NotFound();
+
+            }
+            toDoItem.IsDeleted = true;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+            
     }
 }
