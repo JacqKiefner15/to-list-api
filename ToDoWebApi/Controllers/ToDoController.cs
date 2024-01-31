@@ -112,6 +112,15 @@ namespace ToDoWebApi.Controllers
 
             return NoContent();
         }
-            
+
+        [Route("GetByStatus")]
+        [HttpGet]
+        public Task<ActionResult> GetItemByStatus(ToDoStatus status)
+        {
+            var toDoItems = _context.ToDos.Where(todo => todo.Status == status && !todo.IsDeleted).ToList();
+
+            return Task.FromResult<ActionResult>(Ok(toDoItems));
+        }
+
     }
 }
