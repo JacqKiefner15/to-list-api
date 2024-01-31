@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.CompilerServices;
 using ToDoWebApi.Models;
 
 namespace ToDoWebApi.Controllers
@@ -59,6 +60,39 @@ namespace ToDoWebApi.Controllers
 
             }
             return Ok(toDoItem);
+        }
+
+        [HttpPut("(id)")]
+        public async Task<ActionResult<ToDoItem>> UpdateToDoItem(int id, [FromBody] ToDoItem updatedToDoItem)
+        {
+            if (updatedToDoItem == null || id != updatedToDoItem.Id)
+            {
+                return BadRequest("Invalid Data");
+            }
+
+            var existingToDoItem = await _context.ToDos.FindAsync(id);
+
+            if (existingToDoItem == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+
+                existingToDoItem.Name = updatedToDoItem.Name;
+                existingToDoItem.Description = updatedToDoItem.Description;
+                existingToDoItem.Status = updatedToDoItem.Status;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(existingToDoItem);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server error: {ex.Message}");
+            }
         }
     }
 }
