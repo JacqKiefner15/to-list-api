@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 using ToDoWebApi.Models;
 
@@ -19,9 +20,9 @@ namespace ToDoWebApi.Controllers
         }
 
         [HttpGet(Name = "GetTodos")]
-       public ActionResult<IEnumerable<ToDoItem>> GetTodoItems()
+       public async Task<ActionResult<IEnumerable<ToDoItem>>> GetTodoItems()
         {
-            var toDoItems = _context.ToDos.ToList();
+            var toDoItems = await _context.ToDos.ToListAsync();
 
             return Ok(toDoItems);
         }

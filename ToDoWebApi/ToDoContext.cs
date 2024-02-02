@@ -9,7 +9,7 @@ namespace ToDoWebApi
         public ToDoContext(DbContextOptions<ToDoContext> options) : base(options)
         {
         }
-        public DbSet<ToDoItem> ToDos {  get; set; }
+        public  virtual DbSet<ToDoItem> ToDos {  get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
